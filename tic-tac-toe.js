@@ -23,17 +23,32 @@ document.addEventListener("DOMContentLoaded",function()
     
     
     array = [];
+    
     var squares = document.getElementById("board").children; //Get all the children of the board. These are the divs
     for (i = 0; i < squares.length; i++)
     {
         squares[i].className += "square"; //Style the squares
         squares[i].addEventListener('click',clickFunction,{once : true}); //Add an onclick event listener to each of the squares
         squares[i].id += i; //Add a number ID to each square so that we can check wins
+        squares[i].addEventListener("mouseover",styleSquare);
+        squares[i].addEventListener("mouseout",removeHighlight);
     }
 
     
 
 })
+
+function styleSquare(e)
+{
+    //e.target.classList.remove("hover O");
+    e.target.classList.add("hover");
+    
+}
+
+function removeHighlight(e)
+{
+    e.target.classList.remove("hover");
+}
 
 function clickFunction(e)
 {
