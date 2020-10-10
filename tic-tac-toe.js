@@ -34,40 +34,63 @@ document.addEventListener("DOMContentLoaded",function()
         squares[i].addEventListener("mouseout",removeHighlight);
     }
 
-    
 
 })
 
 function styleSquare(e)
 {
-    //e.target.classList.remove("hover O");
+    //Add the hover class to the square which changes the css
     e.target.classList.add("hover");
     
 }
 
 function removeHighlight(e)
 {
+    //Remove the hover class to the square which changes the css
     e.target.classList.remove("hover");
 }
 
 function clickFunction(e)
 {
-    var currentPlayer = xTurn ? playerX : playerO;
-    
+    var currentPlayer = xTurn ? playerX : playerO; //If it is X's turn then the current player = X
+    var currPlays;
     const square = e.target;
-    square.innerHTML = square.innerHTML + currentPlayer;
-    square.className = square.className + " " + currentPlayer;
+    square.innerHTML = square.innerHTML + currentPlayer; //Put an X or O in the square
+    square.className = square.className + " " + currentPlayer; //Add the X or O to the class
     
     //Make a note of the squares that have been played in
     if (xTurn)
     {
-        arrayX.push(square.id) ;
+        arrayX.push(parseInt(square.id)) ; //X's Moves
+        currPlays = arrayX;
     }
     else
     {
-        arrayO.push(square.id) ;
+        arrayO.push(parseInt(square.id)) ; //O's Moves
+        currPlays = arrayO;
     }
 
-    xTurn = xTurn ? false : true;
+    if (isWinner(currPlays))
+    {
+        stat = document.getElementById("status"); //Get the element with the ID status
+        
+        stat.innerHTML = "Congratulations! " + currentPlayer + " is the Winner!";
+    }
     
+    xTurn = xTurn ? false : true; //Change the player's turn to the other player.
+    
+    
+}
+
+function isWinner(plays)
+{
+    var check = true;
+    
+    return Wins.some(winCombo => { //Check if there is atleast one winning combination that :
+        return winCombo.every(pos =>{  //has every position in the combination filled in the players moves
+            return plays.includes(pos); //this checks each play against the position being tested
+                
+        })
+               
+    })   
 }
