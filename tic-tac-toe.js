@@ -1,8 +1,9 @@
 const playerX = "X";
 const playerO = "O";
 var xTurn = true;
-var arrayX = [] ;
+var arrayX = [];
 var arrayO = [];
+var currPlays = [];
 
 const Wins = 
 [
@@ -19,23 +20,32 @@ const Wins =
 
 document.addEventListener("DOMContentLoaded",function()
 {
-    //When the page loads, initialize the array to store the values of where X and Os have been placed
-    
-    
-    array = [];
-    
+    restartGame();
+    var bttn = document.getElementsByClassName("btn");
+    console.log(bttn);
+    bttn[0].addEventListener("click",restartGame);
+})
+
+function restartGame()
+{ 
+    arrayX = [] ;
+    arrayO = [];
+    currPlays = [];
+
+    stat = document.getElementById("status"); //Get the element with the ID status
+    stat.innerHTML = "Move your mouse over a square and click to play an X or an O.";
+
     var squares = document.getElementById("board").children; //Get all the children of the board. These are the divs
     for (i = 0; i < squares.length; i++)
     {
-        squares[i].className += "square"; //Style the squares
+        squares[i].className = "square"; //Style the squares
+        squares[i].innerHTML = "";
         squares[i].addEventListener('click',clickFunction,{once : true}); //Add an onclick event listener to each of the squares
-        squares[i].id += i; //Add a number ID to each square so that we can check wins
+        squares[i].id = i; //Add a number ID to each square so that we can check wins
         squares[i].addEventListener("mouseover",styleSquare);
         squares[i].addEventListener("mouseout",removeHighlight);
     }
-
-
-})
+}
 
 function styleSquare(e)
 {
@@ -53,7 +63,8 @@ function removeHighlight(e)
 function clickFunction(e)
 {
     var currentPlayer = xTurn ? playerX : playerO; //If it is X's turn then the current player = X
-    var currPlays;
+    
+    console.log(e);
     const square = e.target;
     square.innerHTML = square.innerHTML + currentPlayer; //Put an X or O in the square
     square.className = square.className + " " + currentPlayer; //Add the X or O to the class
@@ -83,9 +94,8 @@ function clickFunction(e)
 }
 
 function isWinner(plays)
-{
-    var check = true;
-    
+{    
+    console.log(plays);
     return Wins.some(winCombo => { //Check if there is atleast one winning combination that :
         return winCombo.every(pos =>{  //has every position in the combination filled in the players moves
             return plays.includes(pos); //this checks each play against the position being tested
