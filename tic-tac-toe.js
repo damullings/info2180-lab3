@@ -84,7 +84,7 @@ function clickFunction(e)
     if (isWinner(currPlays))
     {
         stat = document.getElementById("status"); //Get the element with the ID status
-        
+        stat.classList.add("you-won");
         stat.innerHTML = "Congratulations! " + currentPlayer + " is the Winner!";
     }
     
